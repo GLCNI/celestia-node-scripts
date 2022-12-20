@@ -34,7 +34,7 @@ After=network-online.target
 
 [Service]
 User=root
-ExecStart=/root/celestia-node celestia light start --core.ip $RPC_ENDPOINT 
+ExecStart=/usr/local/bin/celestia light start --core.ip $RPC_ENDPOINT 
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=4096
