@@ -41,8 +41,8 @@ Run script \
 `./cel-light-1.sh`
 
 Respond to the prompts on screen, once first part is completed run \
-'source ~/.bashrc' \
-'./cel-light-2.sh' \
+`source ~/.bashrc`
+`./cel-light-2.sh`
 
 select gRPC endpoint either default or input your own
 
@@ -51,6 +51,8 @@ select gRPC endpoint either default or input your own
 depending on device and OS distribution, setup might not be compatible and there may be extra difficulties. For example testing with mobian OS on pinephone x64 device you must ssh into the device to perform root commands to avoid being locked out of the GUI while running the script. More details in the article for setup on mobile.
 
 enable ssh
+`sudo apt-get install openssh-server`
+`sudo systemctl enable ssh`
 
 log in as root user \
 `sudo -i`
@@ -65,7 +67,7 @@ Run script \
 `./cel-light-arm.sh`
 
 Respond to the prompts on screen, once first part is completed run \
-'source ~/.bashrc' \
-'./cel-light-2.sh' \
+`source ~/.bashrc`
+`./cel-light-2.sh`
 
 select gRPC endpoint either default or input your own
