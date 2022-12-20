@@ -22,4 +22,4 @@ chmod a+x cel-light-2.sh
 
 echo "Finshed installing required packages and go, To continue run the following commands"
 echo "source ~/.bashrc"
-echo "./cel-light-2.sh
+echo "./cel-light-2.sh"
