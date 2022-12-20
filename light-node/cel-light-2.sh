@@ -33,7 +33,7 @@ Description=celestia-lightd Light Node
 After=network-online.target
 
 [Service]
-User=$USER
+User=root
 ExecStart=/root/celestia-node celestia light start --core.ip $RPC_ENDPOINT 
 Restart=on-failure
 RestartSec=3
@@ -48,8 +48,9 @@ sudo systemctl enable celestia-lightd
 sudo systemctl start celestia-lightd
 
 #display wallet 
+cd celestia-node
 echo "your wallet address is below, to pay for data transactions you will need to fund this address"
-echo "(./cel-key list --node.type light --keyring-backend test)"
+echo "(cat ./cel-key list --node.type light --keyring-backend test)"
 
 #logs
 echo "you can display logs at any time with"
