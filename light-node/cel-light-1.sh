@@ -17,7 +17,8 @@ cd /usr/local/ && echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.
 #Installed Go 'source ~/.bashrc' will not run inside sh
 #celestia build and run is performed in script 2- celestia-light-2.sh
 
-wget 'https://raw.githubusercontent.com/GLCNI/celestia-node-scripts/main/light-node/cel-light-2.sh'
+cd
+wget "https://raw.githubusercontent.com/GLCNI/celestia-node-scripts/main/light-node/cel-light-2.sh"
 chmod a+x cel-light-2.sh
 
 echo "Finshed installing required packages and go, To continue run the following commands"
