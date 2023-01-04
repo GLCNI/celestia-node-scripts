@@ -71,3 +71,39 @@ Respond to the prompts on screen, once first part is completed run \
 `./cel-light-2.sh`
 
 select gRPC endpoint either default or input your own
+
+# Celestia Full Storage Node
+This is a shell script which automates the installation and configuration for a Celestia Full Storage client on Mocha Testnet. For Ubuntu 20.04 LTS.
+
+This script performs following tasks:
+- Installs Pre-requisite packages
+- Installs Go
+- Installs Celestia node
+- Initiate Celestia Node for full storage client
+- Setup and start full storage client with systemD
+
+script automates the setup found in
+https://mirror.xyz/0xf3bF9DDbA413825E5DdF92D15b09C2AbD8d190dd/Tc7O6Kzw2RoDmA_FWT1O3HUAkcY69tnIQ8QhAokkTk4 
+
+Celestia Official docs: https://docs.celestia.org/ https://docs.celestia.org/nodes/full-storage-node 
+
+## Steps to run script
+
+log in as root user \
+`sudo -i`
+
+download script \
+`wget https://raw.githubusercontent.com/GLCNI/celestia-node-scripts/main/full-storage-node/cel-full-storage-1.sh` \
+or download directly from this repository
+
+make executable \
+`chmod a+x cel-full-storage-1.sh`
+
+Run script \
+`./cel-full-storage-1.sh`
+
+Respond to the prompts on screen, once first part is completed run \
+`source ~/.bashrc`
+`./cel-full-storage-2.sh`
+
+select gRPC endpoint either default or input your own
