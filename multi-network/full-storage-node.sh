@@ -33,18 +33,26 @@ else
 fi
 
 #NETWORK SELECTION
-echo -n "select network (1 - mocha testnet, 2 - blockspacerace) > "
+echo -n "select network (1 - mocha testnet, 2 - blockspacerace, 3 - arabica devnet) > "
 read selectnetwork
 echo
 if test "$selectnetwork" == "1"
 then
     NETWORK="mocha"
     echo "export NETWORK=$NETWORK" >> $HOME/.bash_profile
+    source $HOME/.bash_profile
 fi
 if test "$selectnetwork" == "2"
 then
     NETWORK="blockspacerace"
     echo "export NETWORK=$NETWORK" >> $HOME/.bash_profile
+    source $HOME/.bash_profile
+fi
+if test "$selectnetwork" == "3"
+then
+    NETWORK="arabica"
+    echo "export NETWORK=$NETWORK" >> $HOME/.bash_profile
+    source $HOME/.bash_profile
 fi
 
 #INSTALL CELESTIA NODE
@@ -58,11 +66,16 @@ cd celestia-node/
 if [ "$NETWORK" == "mocha" ]
 then
     CELESTIA_VER="v0.6.4"
-fi
-if [ "$NETWORK" == "blockspacerace" ]
+elif [ "$NETWORK" == "blockspacerace" ]
 then
     CELESTIA_VER="v0.8.1"
+elif [ "$NETWORK" == "arabica" ]
+then
+    CELESTIA_VER="v0.7.1"
 fi
+
+echo "export CELESTIA_VER=$CELESTIA_VER" >> $HOME/.bash_profile
+source $HOME/.bash_profile
 
 #checkout appropriate version and build Celestia
 git checkout tags/$CELESTIA_VER
@@ -70,28 +83,30 @@ make build
 sudo make install				
 make cel-key
 
+
 #INITIALISE AS FULL STORAGE
 celestia full init --p2p.network $NETWORK
 
 #SETUP VARIABLES
+source $HOME/.bash_profile
 
 #select gRPC endpoint use default or enter custom
 if [ "$NETWORK" == "mocha" ]
 then
-    GRPC_PROMPT="select gRPC endpoint (1 - default-https://grpc-mocha.pops.one/, 2 - enter custom gRPC) > "
-    DEFAULT_URL="https://grpc-mocha.pops.one/"
+    GRPC_PROMPT="select gRPC endpoint (1 - default-https://rpc-mocha.pops.one, 2 - enter custom gRPC) > "
+    DEFAULT_URL="https://rpc-mocha.pops.one"
 fi
 
 if [ "$NETWORK" == "blockspacerace" ]
 then
     GRPC_PROMPT="select gRPC endpoint (1 - default-https://rpc-blockspacerace.pops.one/, 2 - enter custom gRPC) > "
-    DEFAULT_URL="https://rpc-blockspacerace.pops.one/"
+    DEFAULT_URL="https://rpc-blockspacerace.pops.one"
 fi
 
-if [ "$NETWORK" == "aribaca" ]
+if [ "$NETWORK" == "arabica" ]
 then
-    GRPC_PROMPT="select gRPC endpoint (1 - default-https://grpc-aribaca.pops.one/, 2 - enter custom gRPC) > "
-    DEFAULT_URL="https://grpc-aribaca.pops.one/"
+    GRPC_PROMPT="select gRPC endpoint (1 - default-https://limani.celestia-devops.dev, 2 - enter custom gRPC) > "
+    DEFAULT_URL="https://limani.celestia-devops.dev"
 fi
 
 echo -n "$GRPC_PROMPT"
@@ -110,6 +125,7 @@ fi
 
 #WALLET SETUP
 #use default wallet or import existing
+source $HOME/.bash_profile
 echo -n "import existing wallet? (1 - use auto-generated wallet, 2 - import existing wallet) > "
 read selectwallet
 echo
@@ -133,6 +149,8 @@ then
 else
     ./cel-key add $WALLET --keyring-backend test --node.type full --p2p.network $NETWORK --recover
 fi
+
+
 
 #SETUP SYSTEM SERVICE 
 sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-full.service
