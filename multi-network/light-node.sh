@@ -68,7 +68,7 @@ then
     CELESTIA_VER="v0.6.4"
 elif [ "$NETWORK" == "blockspacerace" ]
 then
-    CELESTIA_VER="v0.8.1"
+    CELESTIA_VER="v0.8.2"
 elif [ "$NETWORK" == "arabica" ]
 then
     CELESTIA_VER="v0.7.1"
