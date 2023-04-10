@@ -20,10 +20,12 @@ source $HOME/.bash_profile
 # get balance
 balance=$(curl -sX GET http://127.0.0.1:26659/balance | jq -r '.amount')
 export balance=$balance
-# get wallet 
+# get wallet
+cd celestia-node
 ./cel-key list --node.type $NODETYPE --p2p.network $NETWORK --keyring-backend test
 echo "you are running a $NODETYPE node on $NETWORK network, ensure the address above is sufficiently funded to PayForBlob TXs the current balance of this address is $balance utia"
 sleep 10
+cd
 
 # BUILD DATA GENERATOR 
 # downloads and builds a random hex encoded data generator based on go
