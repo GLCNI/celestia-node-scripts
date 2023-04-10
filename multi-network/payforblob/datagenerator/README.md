@@ -1,7 +1,5 @@
 # random data generator for PayForBlob transactions 
-sub-script is called 
-
-to generate random hex ecoded data for PayForBlob PFB Transactions 
+this sub-script downloads a random hex encoded data generator based on go, creates an binary executable file to be called anytime to create random data for payforblob txs
 
 ## what it does 
 
