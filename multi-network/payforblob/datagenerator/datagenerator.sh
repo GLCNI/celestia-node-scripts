@@ -8,16 +8,11 @@ go mod init datagenerator
 
 #create generateRandHexEncoded to define functions
 mkdir -p generateRandHexEncoded
-touch generateRandHexEncoded/generateRandHexEncoded.go
-nano generateRandHexEncoded/generateRandHexEncoded.go
-cat <<EOF > generateRandHexEncoded/generateRandHexEncoded.go
-package generateRandHexEncoded
-
+echo 'package generateRandHexEncoded
 import (
     "crypto/rand"
     "encoding/hex"
 )
-
 func GenerateNamespaceID() string {
     randomBytes := make([]byte, 8)
     _, err := rand.Read(randomBytes)
@@ -27,7 +22,6 @@ func GenerateNamespaceID() string {
     namespaceID := hex.EncodeToString(randomBytes)
     return namespaceID
 }
-
 func GenerateMessage(length int) (string, error) {
     randomBytes := make([]byte, length)
     _, err := rand.Read(randomBytes)
@@ -36,32 +30,26 @@ func GenerateMessage(length int) (string, error) {
     }
     Message := hex.EncodeToString(randomBytes)
     return Message, nil
-}
-EOF
+}' > generateRandHexEncoded/generateRandHexEncoded.go
+
 
 # creates main.go to call generateRandHexEncoded package
-nano main.go
-cat <<EOF > ../main.go
-package main
-
+echo 'package main
 import (
     "fmt"
     "datagenerator/generateRandHexEncoded"
 )
-
 func main() {
     // generate a random 8-byte string
     namespaceID := generateRandHexEncoded.GenerateNamespaceID()
     fmt.Println(namespaceID)
-
     // generate a random message of length 100 bytes
     message, err := generateRandHexEncoded.GenerateMessage(50)
     if err != nil {
         panic(err)
     }
     fmt.Println(message)
-}
-EOF
+}' > main.go
 
 # make executable file from 'main.go' change name to datagenerator
 go build -o datagenerator main.go
