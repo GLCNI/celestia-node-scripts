@@ -55,7 +55,7 @@ func main() {
 go build -o datagenerator main.go
 
 # add to path to run from any directory 
-echo 'export PATH=$PATH:'"$PWD" >> $HOME/.bash_profile
+echo 'export PATH="$PATH:'"$PWD"'"' >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
 # a binary to generate random data now exists in datagenerator to generate random data for PFB Txs just run 'datagenerator'
