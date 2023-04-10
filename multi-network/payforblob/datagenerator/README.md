@@ -3,10 +3,14 @@ this sub-script downloads a random hex encoded data generator based on go, creat
 
 ## what it does 
 
-creates a directory `datagenerator` for go files and binary 
+creates a directory `datagenerator` for go files and binary
+
 Initializes a new Go module 
+
 creates package `generateRandHexEncoded.go` for two functions: `GenerateNamespaceID()` and `GenerateMessage()`. 
+
 `GenerateNamespaceID()` generates a random 8-byte string and returns a hex-encoded string
+
 `GenerateMessage()` generates a random byte string of a specified length and returns a hex-encoded string
 
 creates `main.go` uses function `main()` to call functions from `generateRandHexEncoded` package
