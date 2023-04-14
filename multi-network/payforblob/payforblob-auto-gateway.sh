@@ -120,28 +120,21 @@ echo "Cron schedule: $cron_schedule"
 
 #generate new script for auto-schedule 
 echo '#!/bin/bash
-# RUN DATA GENERATOR and store values 
+# Load Environment Variables
+source $HOME/.bash_profile
+# RUN DATA GENERATOR and store values
 output=$(datagenerator)
 # Store the first line into a variable
-TEMP_NAMESPACE_ID=$(echo "$output" | sed -n '1p')
-echo "export TEMP_NAMESPACE_ID=$TEMP_NAMESPACE_ID"
+TEMP_NAMESPACE_ID=$(echo "$output" | sed -n 1p)
 # store the second line into a variable
-TEMP_DATA=$(echo "$output" | sed -n '2p')
-echo "export TEMP_DATA=$TEMP_DATA"
-# Print the captured values of random data generator
-echo "results of data generator"
-echo "Namespace ID: $TEMP_NAMESPACE_ID"
-echo "Data: $TEMP_DATA"
+TEMP_DATA=$(echo "$output" | sed -n 2p)
 # SUBMIT PFD TX
-# save output and store the hight as variable & store the tx hash as variable 
+# save output and store the hight as variable & store the tx hash as variable
 response=$(curl -X POST -d "{\"namespace_id\": \"$TEMP_NAMESPACE_ID\", \"data\": \"$TEMP_DATA\", \"gas_limit\": 80000, \"fee\": 2000}" http://localhost:26659/submit_pfb)
-TEMP_HEIGHT=$(echo $response | jq -r '.height')
-echo "export TEMP_HEIGHT=$TEMP_HEIGHT"
-TEMP_TXHASH=$(echo $response | jq -r '.txhash')
-echo "export TEMP_TXHASH=$TEMP_TXHASH"
+TEMP_HEIGHT=$(echo $response | jq -r .height)
+TEMP_TXHASH=$(echo $response | jq -r .txhash)
 # GET NAMESPACED SHARES
-TEMP_NAMESPACED_SHARES=$(curl -sS http://localhost:26659/namespaced_shares/$TEMP_NAMESPACE_ID/height/$TEMP_HEIGHT | jq -r '.shares[0]')
-echo "export TEMP_NAMESPACED_SHARES=$TEMP_NAMESPACED_SHARES"
+TEMP_NAMESPACED_SHARES=$(curl -sS http://localhost:26659/namespaced_shares/$TEMP_NAMESPACE_ID/height/$TEMP_HEIGHT | jq -r .shares[0])
 # Append the variables to a log file
 echo "$(date) - Namespace ID: $TEMP_NAMESPACE_ID, Data: $TEMP_DATA, Height: $TEMP_HEIGHT, Tx Hash: $TEMP_TXHASH, Namespaced Shares: $TEMP_NAMESPACED_SHARES" >> $HOME/datagenerator/logfile.log' > pfb-repeater.sh
 
