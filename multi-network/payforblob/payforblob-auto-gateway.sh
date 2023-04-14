@@ -39,6 +39,9 @@ if [ ! -d "$HOME/datagenerator" ]; then
 
   # Run the script
   ./datagenerator.sh
+  
+  # Load Environment Variables
+  source $HOME/.bash_profile
 fi
 # this sub-script downloads a random hex encoded data generator based on go, creates an binary executable file to be called anytime to create random data for payforblob txs
 
@@ -117,48 +120,34 @@ echo "Cron schedule: $cron_schedule"
 
 #generate new script for auto-schedule 
 echo '#!/bin/bash
-
 # RUN DATA GENERATOR and store values 
 output=$(datagenerator)
-
 # Store the first line into a variable
 TEMP_NAMESPACE_ID=$(echo "$output" | sed -n '1p')
-echo "export TEMP_NAMESPACE_ID=$TEMP_NAMESPACE_ID" > $HOME/.bash_profile		
-source $HOME/.bash_profile
-
+echo "export TEMP_NAMESPACE_ID=$TEMP_NAMESPACE_ID"
 # store the second line into a variable
 TEMP_DATA=$(echo "$output" | sed -n '2p')
-echo "export TEMP_DATA=$TEMP_DATA" > $HOME/.bash_profile
-source $HOME/.bash_profile
-
+echo "export TEMP_DATA=$TEMP_DATA"
 # Print the captured values of random data generator
 echo "results of data generator"
 echo "Namespace ID: $TEMP_NAMESPACE_ID"
 echo "Data: $TEMP_DATA"
-
 # SUBMIT PFD TX
 # save output and store the hight as variable & store the tx hash as variable 
 response=$(curl -X POST -d "{\"namespace_id\": \"$TEMP_NAMESPACE_ID\", \"data\": \"$TEMP_DATA\", \"gas_limit\": 80000, \"fee\": 2000}" http://localhost:26659/submit_pfb)
-
 TEMP_HEIGHT=$(echo $response | jq -r '.height')
-echo "export TEMP_HEIGHT=$TEMP_HEIGHT" > $HOME/.bash_profile
-source $HOME/.bash_profile
-
+echo "export TEMP_HEIGHT=$TEMP_HEIGHT"
 TEMP_TXHASH=$(echo $response | jq -r '.txhash')
-echo "export TEMP_TXHASH=$TEMP_TXHASH" > $HOME/.bash_profile
-source $HOME/.bash_profile
-
+echo "export TEMP_TXHASH=$TEMP_TXHASH"
 # GET NAMESPACED SHARES
 TEMP_NAMESPACED_SHARES=$(curl -sS http://localhost:26659/namespaced_shares/$TEMP_NAMESPACE_ID/height/$TEMP_HEIGHT | jq -r '.shares[0]')
-echo "export TEMP_NAMESPACED_SHARES=$TEMP_NAMESPACED_SHARES" > $HOME/.bash_profile
-source $HOME/.bash_profile
-
+echo "export TEMP_NAMESPACED_SHARES=$TEMP_NAMESPACED_SHARES"
 # Append the variables to a log file
 echo "$(date) - Namespace ID: $TEMP_NAMESPACE_ID, Data: $TEMP_DATA, Height: $TEMP_HEIGHT, Tx Hash: $TEMP_TXHASH, Namespaced Shares: $TEMP_NAMESPACED_SHARES" >> $HOME/datagenerator/logfile.log' > pfb-repeater.sh
 
 # make script executable 
 chmod a+x pfb-repeater.sh
 # run new script with cron scheduler, create cron job to run new script with computed schedule
-echo "$cron_schedule /path/to/pfb-repeater.sh" | crontab -
+echo "$cron_schedule $HOME/pfb-repeater.sh" | crontab -
 
 echo "you have set PFB Tx to run in the background based on your schedule, transaction information will be stored in /datagenerator/logfile.log"
