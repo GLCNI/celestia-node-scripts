@@ -1,14 +1,17 @@
 # How to submit PayForBlob transactions 
 
 **What is pay for blob**
+
 *A type of transaction, submitting a payload of arbitrary bytes (like a serialized block), paying for the amount of block space that the submitted data takes up.*
 
 **Check node balance**
+
 This will be the wallet imported or generated for node, wallet will need to have enough funds to cover fees.
 ```
 curl -X GET http://127.0.0.1:26659/balance
 ```
-**1.	Generate name space and data values **
+**1.	Generate name space and data values**
+
 for testing a go playground here can be used to create random data in suitable format: https://go.dev/play/p/7ltvaj8lhRl 
 
 alternatively a similar `datagenerator` binary can be created from the script 
@@ -23,6 +26,7 @@ generate a random `data` hex-encoded message
 generates a message of an arbitrary length (up to 100 bytes) and returns it as a hex-encoded string
 
 **2.	Submit pay for blob (PFB)**
+
 Example using generated data: from `/datagenerator`
 ```
 curl -X POST -d '{"namespace_id": "0be6685be4ad1a1f",
@@ -30,7 +34,9 @@ curl -X POST -d '{"namespace_id": "0be6685be4ad1a1f",
   "gas_limit": 80000, "fee": 2000}' http://localhost:26659/submit_pfb
 ```
 **3.	Confirm - Return Output and get shares**
+
 The output from submit PFB will have in the first two lines
+
 example:
 ```
 "height": 251745,
