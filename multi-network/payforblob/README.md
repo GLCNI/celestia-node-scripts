@@ -14,18 +14,15 @@ curl -X GET http://127.0.0.1:26659/balance
 
 for testing a go playground here can be used to create random data in suitable format: https://go.dev/play/p/7ltvaj8lhRl 
 
-alternatively a similar `datagenerator` binary can be created from the script 
-```
-https://raw.githubusercontent.com/GLCNI/celestia-node-scripts/main/multi-network/payforblob/datagenerator/datagenerator.sh
-```
+Alternatively a `datagenerator` binary can be downloaded from the script in `/datagenerator` . to create `namespace_id` and `data` values in either hex encoded or base64 data. 
 
-Create a `namespace_id` 
-generates 8 random bytes and returns them as a hex-encoded string.
+For Gateway API use hex encoded data
 
-generate a random `data` hex-encoded message
-generates a message of an arbitrary length (up to 100 bytes) and returns it as a hex-encoded string
+For RPC API use base64 encoded data
 
 **2.	Submit pay for blob (PFB)**
+
+** Using Gateway API **
 
 Example using generated data: from `/datagenerator`
 ```
@@ -33,9 +30,7 @@ curl -X POST -d '{"namespace_id": "0be6685be4ad1a1f",
   "data": " 387565daf6d60239f441a0910cc2fb073f00f3112e9f88ef8b3a9d52a45939df2b11eb93ab83ff030c92d8cb797ffc9ef17a",
   "gas_limit": 80000, "fee": 2000}' http://localhost:26659/submit_pfb
 ```
-**3.	Confirm - Return Output and get shares**
-
-The output from submit PFB will have in the first two lines
+Expected output: from submit PFB will have in the first two lines
 
 example:
 ```
@@ -43,10 +38,26 @@ example:
   "txhash": " 2E17D81B5FD28640B5683EEF3C3FA6120CE7AAA43A0C8E83BF73A857EF7C1A58",
 ```
 
-Example: 
+** Using RPC API **
+
+```
+celestia rpc state SubmitPayForBlob <namespace_ID> <data> 2000 100000
+```
+
+**3.	Confirm - Return Output and get shares**
+
+Search the txhash in the blockexplorer to confirm transaction, to get shares by namespace -
+
+**Using Gateway API**
 ```
 curl -X GET \
   http://localhost:26659/namespaced_shares/0be6685be4ad1a1f/height/251745
+```
+
+**Using RPC API**
+```
+curl -X GET \
+  http://localhost:26659/namespaced_shares/<namespace_ID>/height/<height>
 ```
 
 # Run Script to automate PFB transactions
@@ -80,4 +91,21 @@ chmod a+x payforblob-auto-gateway.sh
 ./payforblob-auto-gateway.sh
 ```
 
-**Using RPC API**: (pending)
+**Using RPC API**: use `payforblob-auto-rpc.sh`
+
+*NOTE: RPC API script uses a base64 encoded datagenerator*
+
+1.	Download script
+```
+wget https://raw.githubusercontent.com/GLCNI/celestia-node-scripts/main/multi-network/payforblob/payforblob-auto-rpc.sh
+```
+2.	Make executable
+```
+chmod a+x payforblob-auto-rpc.sh
+```
+Run script
+```
+./payforblob-auto-rpc.sh
+```
+
+
