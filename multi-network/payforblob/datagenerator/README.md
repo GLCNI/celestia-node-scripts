@@ -1,8 +1,14 @@
 # random data generator for PayForBlob transactions 
-this sub-script downloads a random hex encoded data generator based on go, creates an binary executable file to be called anytime to create random data for payforblob txs
+this sub-script downloads a random hex encoded data generator based on go, creates a binary executable file to be called anytime to create random data for payforblob PFB TXs
+
+for hex encoded data `datagenerator.sh`
+
+for base64 encoded `data datagenerator-base64.sh`
+
 
 ## what it does 
 
+**datagenerator.sh**
 creates a directory `datagenerator` for go files and binary
 
 Initializes a new Go module 
