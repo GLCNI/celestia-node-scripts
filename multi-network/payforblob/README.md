@@ -22,7 +22,7 @@ For RPC API use base64 encoded data
 
 **2.	Submit pay for blob (PFB)**
 
-** Using Gateway API **
+**Using Gateway API**
 
 Example using generated data: from `/datagenerator`
 ```
@@ -38,7 +38,7 @@ example:
   "txhash": " 2E17D81B5FD28640B5683EEF3C3FA6120CE7AAA43A0C8E83BF73A857EF7C1A58",
 ```
 
-** Using RPC API **
+**Using RPC API**
 
 ```
 celestia rpc state SubmitPayForBlob <namespace_ID> <data> 2000 100000
