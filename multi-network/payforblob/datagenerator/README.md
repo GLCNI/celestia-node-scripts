@@ -9,6 +9,8 @@ for base64 encoded data `datagenerator-base64.sh`
 ## what it does 
 
 **datagenerator.sh**
+
+
 creates a directory `datagenerator` for go files and binary
 
 Initializes a new Go module 
