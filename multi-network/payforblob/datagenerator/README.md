@@ -3,7 +3,7 @@ this sub-script downloads a random hex encoded data generator based on go, creat
 
 for hex encoded data `datagenerator.sh`
 
-for base64 encoded `data datagenerator-base64.sh`
+for base64 encoded data `datagenerator-base64.sh`
 
 
 ## what it does 
