@@ -63,6 +63,11 @@ echo "results of data generator"
 echo "Namespace ID: $TEMP_NAMESPACE_ID"
 echo "Data: $TEMP_DATA"
 
+# create authentication token
+export CELESTIA_NODE_AUTH_TOKEN=$(celestia $NODETYPE auth admin --p2p.network $NETWORK)
+echo "export CELESTIA_NODE_AUTH_TOKEN=$CELESTIA_NODE_AUTH_TOKEN" >> $HOME/.bash_profile
+source	$HOME/.bash_profile
+
 # SUBMIT PFD TX
 # save output and store the hight as variable & store the tx hash as variable 
 response=$(celestia rpc state SubmitPayForBlob $TEMP_NAMESPACE_ID $TEMP_DATA 2000 100000)
@@ -118,27 +123,29 @@ fi
 
 echo "Cron schedule: $cron_schedule"
 
-#generate new script for auto-schedule 
-echo '#!/bin/bash
+#generate new script for auto-schedule
+cat > pfb-repeater.sh <<- EOM
+#!/bin/bash
 # Load Environment Variables
-source $HOME/.bash_profile
+source \$HOME/.bash_profile
 # RUN DATA GENERATOR and store values
-output=$(datagenerator)
+output=\$(datagenerator)
 # Store the first line into a variable
-TEMP_NAMESPACE_ID=$(echo "$output" | sed -n 1p)
+TEMP_NAMESPACE_ID=\$(echo "\$output" | sed -n 1p)
 # store the second line into a variable
-TEMP_DATA=$(echo "$output" | sed -n 2p)
+TEMP_DATA=\$(echo "\$output" | sed -n 2p)
 # SUBMIT PFD TX
-# save output and store the hight as variable & store the tx hash as variable
-response=$(celestia rpc state SubmitPayForBlob $TEMP_NAMESPACE_ID $TEMP_DATA 2000 100000)
-TEMP_HEIGHT=$(echo $response | jq -r .height)
-TEMP_TXHASH=$(echo $response | jq -r .txhash)
+# save output and store the height as variable & store the tx hash as variable
+response=\$(celestia rpc state SubmitPayForBlob "\$TEMP_NAMESPACE_ID" "\$TEMP_DATA" 2000 100000)
+TEMP_HEIGHT=\$(echo "\$response" | jq -r '.result.height')
+TEMP_TXHASH=\$(echo "\$response" | jq -r '.result.txhash')
 # GET NAMESPACED SHARES
-TEMP_NAMESPACED_SHARES=$(celestia rpc share GetSharesByNamespace "$(celestia rpc header GetByHeight $TEMP_HEIGHT | jq '.result.dah' -r)" $TEMP_NAMESPACE_ID)
+TEMP_NAMESPACED_SHARES=\$(celestia rpc share GetSharesByNamespace "\$(celestia rpc header GetByHeight \$TEMP_HEIGHT | jq '.result.dah' -r)" \$TEMP_NAMESPACE_ID)
 # Append the variables to a log file
-echo "$(date) - Namespace ID: $TEMP_NAMESPACE_ID, Data: $TEMP_DATA, Height: $TEMP_HEIGHT, Tx Hash: $TEMP_TXHASH, Namespaced Shares: $TEMP_NAMESPACED_SHARES" >> $HOME/datagenerator/logfile.log' > pfb-repeater.sh
+echo "\$(date) - Namespace ID: \$TEMP_NAMESPACE_ID, Data: \$TEMP_DATA, Height: \$TEMP_HEIGHT, Tx Hash: \$TEMP_TXHASH, Namespaced Shares: \$TEMP_NAMESPACED_SHARES" >> \$HOME/datagenerator/logfile.log
+EOM
 
-# make script executable 
+# make script executable
 chmod a+x pfb-repeater.sh
 # run new script with cron scheduler, create cron job to run new script with computed schedule
 echo "$cron_schedule $HOME/pfb-repeater.sh" | crontab -
