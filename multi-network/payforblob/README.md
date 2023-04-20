@@ -40,6 +40,13 @@ example:
 
 **Using RPC API**
 
+set authentication token
+to interact with the API using the rpc subcommand, you will need to set your authentication token or the request will fail. can also be set with `--auth <TOKEN>` flag.  
+```
+export CELESTIA_NODE_AUTH_TOKEN=$(celestia <node type> auth admin --p2p.network <network>)
+```
+
+then submit PayForBlob
 ```
 celestia rpc state SubmitPayForBlob <namespace_ID> <data> 2000 100000
 ```
@@ -56,8 +63,7 @@ curl -X GET \
 
 **Using RPC API**
 ```
-curl -X GET \
-  http://localhost:26659/namespaced_shares/<namespace_ID>/height/<height>
+celestia rpc share GetSharesByNamespace "$(celestia rpc header GetByHeight <height> | jq '.result.dah' -r)" <namespace_ID>
 ```
 
 # Run Script to automate PFB transactions
