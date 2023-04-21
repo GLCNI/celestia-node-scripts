@@ -36,7 +36,7 @@ func GenerateMessage(length int) (string, error) {
 echo 'package main
 import (
     "fmt"
-    "datagenerator_base64/generateBase64Encoded"
+    "datagenerator/generateBase64Encoded"
 )
 func main() {
     // generate a random 8-byte string
