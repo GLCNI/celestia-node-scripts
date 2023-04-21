@@ -72,11 +72,11 @@ source	$HOME/.bash_profile
 # save output and store the hight as variable & store the tx hash as variable 
 response=$(celestia rpc state SubmitPayForBlob $TEMP_NAMESPACE_ID $TEMP_DATA 2000 100000)
 
-TEMP_HEIGHT=$(echo $response | jq -r '.height')
+TEMP_HEIGHT=$(echo $response | jq -r '.result.height')
 echo "export TEMP_HEIGHT=$TEMP_HEIGHT" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
-TEMP_TXHASH=$(echo $response | jq -r '.txhash')
+TEMP_TXHASH=$(echo $response | jq -r '.result.txhash')
 echo "export TEMP_TXHASH=$TEMP_TXHASH" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
@@ -139,10 +139,8 @@ TEMP_DATA=\$(echo "\$output" | sed -n 2p)
 response=\$(celestia rpc state SubmitPayForBlob "\$TEMP_NAMESPACE_ID" "\$TEMP_DATA" 2000 100000)
 TEMP_HEIGHT=\$(echo "\$response" | jq -r '.result.height')
 TEMP_TXHASH=\$(echo "\$response" | jq -r '.result.txhash')
-# GET NAMESPACED SHARES
-TEMP_NAMESPACED_SHARES=\$(celestia rpc share GetSharesByNamespace "\$(celestia rpc header GetByHeight \$TEMP_HEIGHT | jq '.result.dah' -r)" \$TEMP_NAMESPACE_ID)
 # Append the variables to a log file
-echo "\$(date) - Namespace ID: \$TEMP_NAMESPACE_ID, Data: \$TEMP_DATA, Height: \$TEMP_HEIGHT, Tx Hash: \$TEMP_TXHASH, Namespaced Shares: \$TEMP_NAMESPACED_SHARES" >> \$HOME/datagenerator/logfile.log
+echo "\$(date) - Namespace ID: \$TEMP_NAMESPACE_ID, Data: \$TEMP_DATA, Height: \$TEMP_HEIGHT, Tx Hash: \$TEMP_TXHASH" >> \$HOME/datagenerator/logfile.log
 EOM
 
 # make script executable
