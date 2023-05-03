@@ -216,3 +216,9 @@ If the celesita node server is active and sending metrics to metrics server, met
 `curl -s localhost:8889/metrics | grep HELP`
 
 ## Use Metrics server install script 
+
+```
+wget https://raw.githubusercontent.com/GLCNI/celestia-node-scripts/main/multi-network/monitoring/prometheus/prometheus-metrics-server.sh
+chmod a+x prometheus-metrics-server.sh
+./prometheus-metrics-server.sh
+```
