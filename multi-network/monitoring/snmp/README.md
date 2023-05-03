@@ -33,10 +33,14 @@ rocommunity6 public
 ```
 
 **Restart the service**
+
+```
 sudo systemctl daemon-reload
 sudo systemctl restart snmpd
+```
 
 **Firewall**
+
 `snmp` exposes devices on port `161`, this must be opened
 
 ## Setup PTRG on dedicated device 
