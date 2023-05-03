@@ -18,9 +18,9 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential git make ncdu -y
 
 #install go ver1.20.1 sh
-wget "https://raw.githubusercontent.com/GLCNI/celestia-node-scripts/main/multi-network/go/go-v1.20.1-install.sh"
-chmod a+x go-v1.20.1-install.sh
-./go-v1.20.1-install.sh
+wget "https://raw.githubusercontent.com/GLCNI/celestia-node-scripts/main/multi-network/go/go-v1.20.3-install.sh"
+chmod a+x go-v1.20.3-install.sh
+./go-v1.20.3-install.sh
 
 source ~/.bash_profile
 
@@ -68,7 +68,7 @@ then
     CELESTIA_VER="v0.6.4"
 elif [ "$NETWORK" == "blockspacerace" ]
 then
-    CELESTIA_VER="v0.9.1"
+    CELESTIA_VER="v0.9.2"
 elif [ "$NETWORK" == "arabica" ]
 then
     CELESTIA_VER="v0.7.1"
