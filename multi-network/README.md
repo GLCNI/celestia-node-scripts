@@ -46,7 +46,7 @@ Respond to Prompts on terminal
 
 download script
 ```
-wget https://raw.githubusercontent.com/GLCNI/celestia-node-scripts/main/multi-network/light-node-ARM-sh
+wget https://raw.githubusercontent.com/GLCNI/celestia-node-scripts/main/multi-network/light-node-ARM.sh
 ```
 make executable
 ```
