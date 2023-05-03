@@ -1,6 +1,13 @@
 # celestia-node-scripts
 deployment scripts for celestia nodes
 
+##THIS REPO IS NO LONGER SUPPORTED
+for up to date deployment scripts see 'multi-network' 
+
+'multi-network' adds more functionality and support for multiple testnets, including long term testnet 'Mocha'
+
+-------------------------------------------------------------------------------------------------------------------
+
 # Celestia Light Node – Ubuntu/ARM
 This is a shell script which automates the installation and configuration for a Celestia Light client on Mocha Testnet. For Ubuntu 20.04 LTS or ARM based distro such as Debian 
 This script performs following tasks:
