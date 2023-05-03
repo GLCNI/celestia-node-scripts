@@ -12,9 +12,8 @@ if [ ! -f ~/.bash_profile ]; then
     fi
 fi
 
-sudo apt update && sudo apt upgrade -y	
-
 #install pre-reqs
+sudo apt update 
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential git make ncdu -y
 
 #install go ver1.20.1 for ARM sh
