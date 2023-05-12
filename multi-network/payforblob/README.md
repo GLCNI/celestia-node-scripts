@@ -27,7 +27,7 @@ For RPC API use base64 encoded data
 Example using generated data: from `/datagenerator`
 ```
 curl -X POST -d '{"namespace_id": "0be6685be4ad1a1f",
-  "data": " 387565daf6d60239f441a0910cc2fb073f00f3112e9f88ef8b3a9d52a45939df2b11eb93ab83ff030c92d8cb797ffc9ef17a",
+  "data": "387565daf6d60239f441a0910cc2fb073f00f3112e9f88ef8b3a9d52a45939df2b11eb93ab83ff030c92d8cb797ffc9ef17a",
   "gas_limit": 80000, "fee": 2000}' http://localhost:26659/submit_pfb
 ```
 Expected output: from submit PFB will have in the first two lines
@@ -66,6 +66,13 @@ curl -X GET \
 celestia rpc share GetSharesByNamespace "$(celestia rpc header GetByHeight <height> | jq '.result.dah' -r)" <namespace_ID>
 ```
 
+# Use UI to submit PFBs
+
+see `GUI` directory to run an easy interface to submit PFBs and generate data at the click of a button, can also run a program to submit PFBs at regular intervals.
+
+![Screenshot from 2023-05-12 11-39-32](https://github.com/GLCNI/celestia-node-scripts/assets/67609618/bb53fe12-f3fe-44b5-b063-bfd90a534d72)
+
+
 # Run Script to automate PFB transactions
 
 Run a script to auto generate random data and submit PFB transactions at a selected time interval, transaction data is logged. This works for light nodes or full storage nodes setup via the `multi-client` node deployment scripts.
@@ -84,15 +91,12 @@ Run a script to auto generate random data and submit PFB transactions at a selec
 
 *NOTE: gateway API will soon be deprecated. celestia-node exposes its REST gateway on port 26659 by default.* 
 
-1.	Download script 
+Download script 
 ```
-wget https://raw.githubusercontent.com/GLCNI/celestia-node-scripts/main/multi-network/payforblob/payforblob-auto-gateway.sh
+wget https://raw.githubusercontent.com/GLCNI/celestia-node-scripts/main/multi-network/payforblob/payforblob-auto-gateway.sh && chmod a+x payforblob-auto-gateway.sh
 ```
-2.	Make executable 
-```
-chmod a+x payforblob-auto-gateway.sh
-```
-3.	Run script
+
+Run script
 ```
 ./payforblob-auto-gateway.sh
 ```
@@ -101,14 +105,11 @@ chmod a+x payforblob-auto-gateway.sh
 
 *NOTE: RPC API script uses a base64 encoded datagenerator*
 
-1.	Download script
+Download script
 ```
-wget https://raw.githubusercontent.com/GLCNI/celestia-node-scripts/main/multi-network/payforblob/payforblob-auto-rpc.sh
+wget https://raw.githubusercontent.com/GLCNI/celestia-node-scripts/main/multi-network/payforblob/payforblob-auto-rpc.sh && chmod a+x payforblob-auto-rpc.sh
 ```
-2.	Make executable
-```
-chmod a+x payforblob-auto-rpc.sh
-```
+
 Run script
 ```
 ./payforblob-auto-rpc.sh
