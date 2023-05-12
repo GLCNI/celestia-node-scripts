@@ -3,7 +3,7 @@ This uses some parts of the PayForBlob auto scripts in the parent folder to crea
 
 this application is for use with `multi-client` deployment scripts, though it is for use with `celestia-node` (data availability – light or full-storage) other install methods might require some manual configuration.
 
-file:///home/glc/Documents/Screenshot%20from%202023-05-12%2011-36-32.png![image](https://github.com/GLCNI/celestia-node-scripts/assets/67609618/a7c391de-501c-4369-9323-30437e80b1b9)
+![Screenshot from 2023-05-12 11-39-32](https://github.com/GLCNI/celestia-node-scripts/assets/67609618/d0a9e36e-0ead-4344-a7d1-491c65f87ded)
 
 
 ## How to Install
