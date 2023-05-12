@@ -52,6 +52,11 @@ sudo apt-get install python3-pip
 echo "Installing Flask..."
 pip3 install flask
 
+#open port 5000
+sudo ufw allow 5000
+sudo ufw allow ssh
+sudo ufw enable
+
 # start the UI 
 if [ "$choice" == "2" ]; then
     echo "Starting RPC UI..."
