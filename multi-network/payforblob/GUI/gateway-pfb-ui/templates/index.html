@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CELESTIA Data Availability - PayForBlob</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            min-height: 100vh;
+            background: 
+                url("{{ url_for('static', filename='images/image-1-resize-400x400.png') }}") top right no-repeat, 
+                linear-gradient(to right top, #fd63d9, #ff71b5, #ff8a9b, #ffa591, #ffbd97, #ffbe97, #ffbe96, #ffbf96, #ffaa8b, #ff9385, #fc7d87, #f4668d);
+            background-size: auto, cover;
+        }
+    </style>
+</head>
+<body>
+    <h1>Celestia Data Availability: Submit PayForBlob Txs</h1>
+
+   <!-- Part 1 -->
+   <div>
+       <h2>Inititalize Gateway API</h2>
+       <p>press ‘start’ to initialize, this will run the gateway script, check for celestia node and install a datagenerator for PFBs, wait to complete</p>
+       <button id="run_script">Start</button>
+       <pre id="script_output"></pre>
+   </div>
+
+
+    <!-- Part 2 -->
+    <div>
+        <h2>Generate Random Data</h2>
+        <button id="generate_data">Generate Data</button>
+        <pre id="data_output"></pre>
+    </div>
+
+    <!-- Part 3 -->
+    <div>
+        <h2>Submit PayForBlob Transaction</h2>
+        <button id="submit_pfb">Submit</button>
+        <pre id="submit_output"></pre>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#run_script").click(function() {
+                var api_interface = $("#api_interface").val();
+                $.post("/api/run_script", {api_interface: api_interface}, function(data) {
+                    if (data.success) {
+                        $("#script_output").text(data.output);
+                    } else {
+                        $("#script_output").text("There was a problem, are you sure you have a Celestia node running? Error: " + data.output);
+                    }
+                });
+            });
+
+            $("#generate_data").click(function() {
+                $.get("/api/generate_data", function(data) {
+                    $("#data_output").text(data.data);
+                });
+            });
+
+            $("#submit_pfb").click(function() {
+                var data_lines = $("#data_output").text().split('\n');
+                if (data_lines.length < 2) {
+                    alert("Please generate data first.");
+                    return;
+                }
+                var namespace_id = data_lines[0];
+                var data = data_lines[1];
+                $.post("/api/submit_pfb", {namespace_id: namespace_id, data: data}, function(res) {
+                    $("#submit_output").text("height: " + res.height + "\ntxhash: " + res.txhash);
+                });
+            });
+        });
+    </script>
+
+    <!-- Part 4 -->
+    <div>
+        <h2>Automate PayForBlob Transactions</h2>
+        <p>Select a time interval (in minutes) to submit payforblob TXs:</p>
+        <input type="number" id="interval_minutes" min="1" step="1" placeholder="Enter minutes" />
+        <button id="start_interval">Confirm</button>
+        <pre id="logfile_output"></pre>
+        <p>You can close this browser. PFB TXs will continue to be submitted in the background, so long as Flask app is running. You can find the TX data in $HOME/datagenerator/logfile.log. To stop submitting TXs, simply close the Flask app.</p>
+    </div>
+
+    <script>
+        $("#start_interval").click(function() {
+            var interval_minutes = $("#interval_minutes").val();
+            $.post("/api/start_interval", {interval_minutes: interval_minutes}, function(data) {
+                if (data.success) {
+                    $("#logfile_output").text("PFB TX automation started with an interval of " + interval_minutes + " minutes.");
+                } else {
+                    $("#logfile_output").text("There was a problem starting the automation. Error: " + data.error);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
