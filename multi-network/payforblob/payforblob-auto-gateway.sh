@@ -50,7 +50,7 @@ output=$(datagenerator)
 
 # Store the first line into a variable
 TEMP_NAMESPACE_ID=$(echo "$output" | sed -n '1p')
-echo "export TEMP_NAMESPACE_ID=$TEMP_NAMESPACE_ID" >> $HOME/.bash_profile		
+echo "export TEMP_NAMESPACE_ID=$TEMP_NAMESPACE_ID" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
 # store the second line into a variable
@@ -88,32 +88,43 @@ echo "Data: $TEMP_DATA"
 echo "Transaction was successful, here is the relevant block information"
 echo "Height: $TEMP_HEIGHT"
 echo "Txhash: $TEMP_TXHASH"
-echo "Shares: $TEMP_NAMESPACED_SHARES"
+# echo "Shares: $TEMP_NAMESPACED_SHARES"
 sleep 10
 
-#ENTER TIME INTERVAL
+# ENTER TIME INTERVAL
 echo "To set the Time Interval"
-echo "if the number is less than 24 hours, it will be set to run every X hours starting from midnight" 
-echo "example enter 2= every 2 hours from 00:00 you will submit random PFB Tx 12 times per day" 
-echo "enter a number greater than 24 and multiples off, to set a day interval"  
-echo "example using 72= you will submit random PFB Tx every 3 days" 
-echo "Enter an integer representing hours: "
-read hours
-if ! [[ "$hours" =~ ^[0-9]+$ ]]; then
+echo "If the number is less than 1440 minutes (24 hours), it will be set to run every X minutes"
+echo "Example: enter 120 = every 120 minutes (2 hours) from 00:00, you will submit random PFB Tx 12 times per day"
+echo "Enter a number greater than 1440 and multiples of it, to set a day interval"
+echo "Example: using 4320 = you will submit random PFB Tx every 3 days"
+echo "Enter an integer representing minutes:"
+read minutes
+
+if ! [[ "$minutes" =~ ^[0-9]+$ ]]; then
   echo "Invalid input: not a number"
   exit 1
 fi
 
 # Compute cron schedule
-if [ "$hours" -lt 24 ]; then
-  cron_schedule="0 */$hours * * *"
-else
-  days=$(( $hours / 24 ))
-  if [ "$days" -eq 1 ]; then
-    cron_schedule="0 0 */$days * *"
+if [ "$minutes" -lt 1440 ]; then
+  if [ "$minutes" -eq 1 ]; then
+    cron_schedule="* * * * *"
   else
-    cron_schedule="0 0 */$days * *"
+    hours=$(( $minutes / 60 ))
+    remainder_minutes=$(( $minutes % 60 ))
+
+    # Check if hours is 0, and if so, set it to '*'
+    if [ "$hours" -eq 0 ]; then
+      hours="*"
+    else
+      hours="*/$hours"
+    fi
+
+    cron_schedule="$remainder_minutes $hours * * *"
   fi
+else
+  days=$(( $minutes / 1440 ))
+  cron_schedule="0 0 */$days * *"
 fi
 
 echo "Cron schedule: $cron_schedule"
@@ -134,9 +145,9 @@ response=$(curl -X POST -d "{\"namespace_id\": \"$TEMP_NAMESPACE_ID\", \"data\":
 TEMP_HEIGHT=$(echo $response | jq -r .height)
 TEMP_TXHASH=$(echo $response | jq -r .txhash)
 # GET NAMESPACED SHARES
-TEMP_NAMESPACED_SHARES=$(curl -sS http://localhost:26659/namespaced_shares/$TEMP_NAMESPACE_ID/height/$TEMP_HEIGHT | jq -r .shares[0])
+# TEMP_NAMESPACED_SHARES=$(curl -sS http://localhost:26659/namespaced_shares/$TEMP_NAMESPACE_ID/height/$TEMP_HEIGHT | jq -r .shares[0])
 # Append the variables to a log file
-echo "$(date) - Namespace ID: $TEMP_NAMESPACE_ID, Data: $TEMP_DATA, Height: $TEMP_HEIGHT, Tx Hash: $TEMP_TXHASH, Namespaced Shares: $TEMP_NAMESPACED_SHARES" >> $HOME/datagenerator/logfile.log' > pfb-repeater.sh
+echo "$(date) - Namespace ID: $TEMP_NAMESPACE_ID, Data: $TEMP_DATA, Height: $TEMP_HEIGHT, Tx Hash: $TEMP_TXHASH" >> $HOME/datagenerator/logfile.log' > pfb-repeater.sh
 
 # make script executable 
 chmod a+x pfb-repeater.sh
