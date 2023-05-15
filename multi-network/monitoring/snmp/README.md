@@ -66,3 +66,25 @@ Devices > will look for all available devices on the local area network
 Select and ‘recommend sensors’ to find everything available on the device
 
 ![image](https://user-images.githubusercontent.com/67609618/236052729-c6f2da2e-3606-4b0f-a34a-8a6b763ef3d5.png)
+
+
+# Monitor System service with PRTG 
+
+custom sensor for PRTG to monitor liveness of celestia-node service, can be used with full storage or light nodes.  
+
+**To Install:**
+
+Save to /usr/local/bin/ on the target device 
+```
+wget https://raw.githubusercontent.com/GLCNI/celestia-node-scripts/main/multi-network/monitoring/snmp/service-monitor.sh
+```
+Note: do not need to run this, as PRTG will do this
+
+On PRTG Monitoring server:
+Navagate to device (should be already connected with SNMP steps before) > add sensor > SSH Script
+
+Configure Sensor:
+1. Enter the script name and location on device 
+2. Credentials for Linux Systems: Ensure you provide valid credentials for the target Ubuntu system.
+3. Parameters: Leave this blank as our script doesn't need any parameters.
+4. Sensor Result: Choose "Exit code" as sensor result, sensor status will be determined by the exit code of the script.
