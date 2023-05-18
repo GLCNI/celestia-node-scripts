@@ -63,7 +63,7 @@ wget https://raw.githubusercontent.com/GLCNI/celestia-node-scripts/main/multi-ne
 
 A minimal extremely lightweight Linux distribution, becoming popular around gaming using Linux.
 
-Tested on SteamDeck (runs Arch Linux) this is beta, not fully tested on other arch Linux based devices, likely require a lot more configuration steps related to system itself, more detail in this example: < PLACEHOLDER LINK >
+Tested on SteamDeck (runs Arch Linux) this is beta, not fully tested on other arch Linux based devices, likely require a lot more configuration steps related to system itself, more detail in this example: [celestia node on mobile devices](https://mirror.xyz/0xf3bF9DDbA413825E5DdF92D15b09C2AbD8d190dd/1cB-lOAWzGKgGvItDXzwyMUnkR1PC3sIKEfa5yIPM8k)
 
 **Download and make executable**
 ```
