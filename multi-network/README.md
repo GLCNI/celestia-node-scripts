@@ -5,13 +5,13 @@ Deployment scripts for Celestia DA Nodes: this includes Full storage node and li
 shell scripts to automate the installation and configuration for a Celestia Light client or Full storage Node.
 
 **Script performs following tasks:**
-• Installs Pre-requisite packages
-• Installs Go
-• Select Celestia Network (mocha/blockspacerace/arabica)
-• Installs Celestia node
-• Initiate Celestia Node for light client / full storage
-• Setup wallet or import existing
-• Setup and start light client with systemD
+- Installs Pre-requisite packages
+- Installs Go
+- Select Celestia Network (mocha/blockspacerace/arabica)
+- Installs Celestia node
+- Initiate Celestia Node for light client / full storage
+- Setup wallet or import existing
+- Setup and start light client with systemD
 
 **Hardware Requirements-Light:** CPU: Single Core/ 2GB RAM/ Disk: 5 GB SSD/ 56Kbps Download/upload This is incredibly lightweight requirements that you can even run on a Mobile phone with ARM based CPU/Linux based OS
 
