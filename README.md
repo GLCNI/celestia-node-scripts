@@ -1,7 +1,9 @@
 # celestia-node-scripts
 deployment scripts for celestia nodes
 
-## THIS REPO IS NO LONGER SUPPORTED
+-------------------------------------------------------------------------------------------------------------------
+
+## THIS FOLDER IS NO LONGER SUPPORTED
 **for up to date deployment scripts see 'multi-network'**
 
 **'multi-network' adds more functionality and support for multiple testnets, including long term testnet 'Mocha'**
